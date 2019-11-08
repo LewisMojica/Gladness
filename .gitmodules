@@ -1,0 +1,6 @@
+[submodule "ArduinoESC"]
+	path = ArduinoESC
+	url = https://github.com/LewisMojica/ArduinoESC.git
+[submodule "ArduinoSotfwareTimer"]
+	path = ArduinoSotfwareTimer
+	url = https://github.com/LewisMojica/ArduinoSotfwareTimer.git
