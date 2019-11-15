@@ -4,7 +4,8 @@
 
 ESC esc_left,esc_right;
 
-Timer com_time_out(1000);
+Timer com_time_out(1000); //si tardan mas del timepo especificado se concidera que la conexion BT se ha perdido
+Timer init_delay(5000);   //tiempo que tarda el robot en comenzar a avanzar luego de que el switch de control es activado
 
 //////HARDWARE STATE//////
 byte dir,go,puff,speed,rev;
@@ -19,6 +20,7 @@ void UpdateHardware();
 /////////////P I N S/////////////////
 #define pin_esc_left 9
 #define pin_esc_right 10
+#define control_switch 12
 
 ///////////PARAMETER/////////////////
 #define escS_max_throttle_micros 1600
@@ -58,18 +60,40 @@ void setup() {
   com_time_out.initOn();
 
   pinMode(13,OUTPUT);
+  pinMode(control_switch,INPUT_PULLUP);
 
 }
 
 void loop() {
-  updateData();
+    
+  go = 0;
+  dir = 1;
   UpdateHardware();
-  delay(50);
+  
+  while(digitalRead(control_switch) == true || updateData() == false){
+    // showData();
+    ;
+  }
+
+  init_delay.init();
+
+  while (init_delay.check() == false && digitalRead(control_switch) == false) 
+  {
+    // updateData();
+  }
+  
+  while (digitalRead(control_switch) == false && updateData() == true){
+    updateData();
+    UpdateHardware();
+    // showData();
+  }
 }
 
 
 
 void UpdateHardware(){
+
+  showData();
   int dirr;
   if(rev == 1) dirr = -1; else dirr = 1;
   
@@ -141,7 +165,6 @@ bool updateData(){
       puff = Serial.read();
       speed = Serial.read();
       rev = Serial.read();
-      // showData();
     }
   }
   if(com_time_out.check()){
