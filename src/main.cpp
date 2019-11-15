@@ -55,7 +55,7 @@ void setup() {
 
   Serial.begin(9600);
 
-
+  com_time_out.initOn();
 
   pinMode(13,OUTPUT);
 
@@ -141,17 +141,18 @@ bool updateData(){
       puff = Serial.read();
       speed = Serial.read();
       rev = Serial.read();
-      return true;
+      // showData();
     }
   }
-  if(com_time_out.read()){
+  if(com_time_out.check()){
     dir = 1;
     go = 0;
     speed = 0;
     rev = 0;
-    Serial.print("BT com failed");
+    Serial.println("BT com failed");
+    return false;
   }
-  return false;
+  return true;
 }
 
 void showData(){
