@@ -69,6 +69,7 @@ void setup() {
 void loop() {
   digitalWrite(pin_led,LOW);
 
+  rev = 0;
   go = 0;
   dir = 1;
   UpdateHardware();
