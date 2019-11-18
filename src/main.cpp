@@ -99,7 +99,6 @@ void loop() {
 
 void UpdateHardware(){
 
-  showData();
   int dirr;
   if(rev == 1) dirr = -1; else dirr = 1;
   
@@ -165,6 +164,8 @@ void UpdateHardware(){
 bool updateData(){
   if(Serial.available() >= 6){
     if(Serial.read() == 42){
+      showData();
+
       com_time_out.init(); //comienza el conteo de verificaciond de conexion
       dir = Serial.read();
       go = Serial.read();
