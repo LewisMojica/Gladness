@@ -164,14 +164,14 @@ void UpdateHardware(){
 bool updateData(){
   if(Serial.available() >= 6){
     if(Serial.read() == 42){
-      showData();
-
       com_time_out.init(); //comienza el conteo de verificaciond de conexion
       dir = Serial.read();
       go = Serial.read();
       puff = Serial.read();
       speed = Serial.read();
       rev = Serial.read();
+      
+      showData();
     }
   }
   if(com_time_out.check()){
