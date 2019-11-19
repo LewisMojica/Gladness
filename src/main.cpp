@@ -21,7 +21,7 @@ void UpdateHardware();
 /////////////P I N S/////////////////
 #define pin_esc_left 9
 #define pin_esc_right 10
-#define control_switch 12
+#define control_switch 7
 #define pin_led 13
 
 ///////////PARAMETER/////////////////
@@ -59,7 +59,7 @@ void setup() {
 
   Serial.begin(9600);
 
-  com_time_out.initOn();
+  com_time_out.init();
 
   pinMode(13,OUTPUT);
   pinMode(control_switch,INPUT_PULLUP);
@@ -72,26 +72,59 @@ void loop() {
   rev = 0;
   go = 0;
   dir = 1;
+  speed = 0;
+
   UpdateHardware();
   
-  while(digitalRead(control_switch) == true || updateData() == false){
-    // showData();
-    ;
+  while(true == true){
+    updateData();
+    if(digitalRead(control_switch) == false){
+      delay(100);
+      if(digitalRead(control_switch) == false && (updateData() == true)){
+        break;
+        }
+    }
+    delay(50);
   }
 
   init_delay.init();
   led_blink.init();
 
-  while (init_delay.check() == false && digitalRead(control_switch) == false) 
+  while (init_delay.check() == false)
   {
-    if(led_blink.read() == true) digitalWrite(pin_led,!digitalRead(pin_led));
+    if(led_blink.read() == true) {digitalWrite(pin_led,!digitalRead(pin_led));}
+    if(digitalRead(control_switch) == true ){
+      delay(100);
+      if(digitalRead(control_switch) == true)
+        break;
+    }
   }
   digitalWrite(pin_led,HIGH);
   
-  while (digitalRead(control_switch) == false && updateData() == true){
-    updateData();
+  rev = 0;
+  go = 0;
+  dir = 1;
+  speed = 0;
+
+  if(Serial.available() > 0){
+    int i = Serial.available();
+    while(i > 0){
+      Serial.read();
+      i--;
+    }
+  }
+  delay(100);
+
+  while (false != !false){
+    if(digitalRead(control_switch) == true || updateData() == false){
+      delay(100);
+      if(digitalRead(control_switch) == true || updateData() == false)
+        break;
+    }
     UpdateHardware();
-    // showData();
+    updateData();
+    updateData();
+    updateData();
   }
 }
 
@@ -171,15 +204,16 @@ bool updateData(){
       speed = Serial.read();
       rev = Serial.read();
       
-      showData();
+      // showData();
+      return true;
     }
   }
-  if(com_time_out.check()){
+  else if(com_time_out.check() == true){
     dir = 1;
     go = 0;
     speed = 0;
     rev = 0;
-    Serial.println("BT com failed");
+    // Serial.println("BT com failed");
     return false;
   }
   return true;
