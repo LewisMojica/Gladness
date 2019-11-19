@@ -84,7 +84,7 @@ void loop() {
         break;
         }
     }
-    delay(50);
+    delay(150);
   }
 
   init_delay.init();
@@ -113,18 +113,20 @@ void loop() {
       i--;
     }
   }
-  delay(100);
+  delay(200);
 
   while (false != !false){
-    if(digitalRead(control_switch) == true || updateData() == false){
+    if(digitalRead(control_switch) == true){
       delay(100);
-      if(digitalRead(control_switch) == true || updateData() == false)
+      if(digitalRead(control_switch) == true){
         break;
+      }
     }
     UpdateHardware();
-    updateData();
-    updateData();
-    updateData();
+    if(updateData() == false){
+      break;
+    };
+    
   }
 }
 
