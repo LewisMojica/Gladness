@@ -5,7 +5,7 @@
 ESC esc_left,esc_right;
 
 Timer com_time_out(1000); //si tardan mas del timepo especificado se concidera que la conexion BT se ha perdido
-Timer init_delay(5000);   //tiempo que tarda el robot en comenzar a avanzar luego de que el switch de control es activado
+Timer init_delay(4900);   //tiempo que tarda el robot en comenzar a avanzar luego de que el switch de control es activado
 Timer led_blink(200);
 
 //////HARDWARE STATE//////
@@ -17,6 +17,8 @@ bool updateData();
 //muestra los valores de los parametros por el monitor serie
 void showData();
 void UpdateHardware();
+///
+void serialClear();
 
 /////////////P I N S/////////////////
 #define pin_esc_left 9
@@ -84,7 +86,6 @@ void loop() {
         break;
         }
     }
-    delay(150);
   }
 
   init_delay.init();
@@ -106,14 +107,8 @@ void loop() {
   dir = 1;
   speed = 0;
 
-  if(Serial.available() > 0){
-    int i = Serial.available();
-    while(i > 0){
-      Serial.read();
-      i--;
-    }
-  }
-  delay(200);
+  serialClear();
+  com_time_out.init();
 
   while (false != !false){
     if(digitalRead(control_switch) == true){
@@ -234,3 +229,8 @@ void showData(){
   Serial.println(rev);
 }
 
+void serialClear(){
+  for (int i = 64; i > 0; i--){
+    Serial.read();
+  }
+}
