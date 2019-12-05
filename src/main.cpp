@@ -27,17 +27,26 @@ void serialClear();
 #define pin_led 13
 
 ///////////PARAMETER/////////////////
-#define escS_max_throttle_micros 1600
-#define escS_min_throttle_micros 1530
-#define escS_max_reverse_micros 1350
-#define escS_min_reverse_micros 1450
+
+
+#define escS_right_max_throttle_micros 1570
+#define escS_right_min_throttle_micros 1540
+#define escS_right_max_reverse_micros 1350
+#define escS_right_min_reverse_micros 1450
+
+
+#define escS_left_max_throttle_micros 1570
+#define escS_left_min_throttle_micros 1520
+#define escS_left_max_reverse_micros 1400
+#define escS_left_min_reverse_micros 1470
+
 #define turn_diferentian_multiplicator 0.5
 
 
 //valores del las tres velocidades
 #define speed_0 33
-#define speed_1 66
-#define speed_2 100
+#define speed_1 50
+#define speed_2 50
 
 
 
@@ -45,16 +54,16 @@ void serialClear();
 
 void setup() {
   esc_left.attach(pin_esc_left);
-  esc_left.setMaxThrottleMicros(escS_max_throttle_micros);
-  esc_left.setMinThrottleMicros(escS_min_throttle_micros);
-  esc_left.setMinReverseMicros(escS_min_reverse_micros);
-  esc_left.setMaxReverseMicros(escS_max_reverse_micros);
+  esc_left.setMaxThrottleMicros(escS_left_max_throttle_micros);
+  esc_left.setMinThrottleMicros(escS_left_min_throttle_micros);
+  esc_left.setMinReverseMicros(escS_left_min_reverse_micros);
+  esc_left.setMaxReverseMicros(escS_left_max_reverse_micros);
 
   esc_right.attach(pin_esc_right);
-  esc_right.setMaxThrottleMicros(escS_max_throttle_micros);
-  esc_right.setMinThrottleMicros(escS_min_throttle_micros);  
-  esc_right.setMinReverseMicros(escS_min_reverse_micros);
-  esc_right.setMaxReverseMicros(escS_max_reverse_micros);
+  esc_right.setMaxThrottleMicros(escS_right_max_throttle_micros);
+  esc_right.setMinThrottleMicros(escS_right_min_throttle_micros);  
+  esc_right.setMinReverseMicros(escS_right_min_reverse_micros);
+  esc_right.setMaxReverseMicros(escS_right_max_reverse_micros);
 
   esc_right.setSpeed(0); //enable esc
   esc_left.setSpeed(0); //enable esc
